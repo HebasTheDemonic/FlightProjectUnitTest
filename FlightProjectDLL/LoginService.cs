@@ -16,6 +16,11 @@ namespace FlightProject
         internal DAOs.ICustomerDAO _customerDAO;
         internal int FacadeIndex { get; }
 
+        /// <summary>
+        /// Method for retrieving a login token based on user type.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public LoginService(string username, string password)
         {
             LoginEnum loginEnum = TryLogin(username);
@@ -56,6 +61,16 @@ namespace FlightProject
             }
         }
 
+        /// <summary>
+        /// Method for determining the user type.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <exception cref="UserNotFoundException">
+        /// Thrown when the given username does not exist in the database.
+        /// </exception>
+        /// <returns LoginEnum>
+        /// An enum representing the user type
+        /// </returns>
         public LoginEnum TryLogin(string userName)
         {
             int loginValue = 0;
@@ -90,6 +105,15 @@ namespace FlightProject
 
         }
 
+        /// <summary>
+        /// Method for logging in an administrator.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="loginToken">
+        /// This param has the "OUT" prefix due to being also returned from this method with the bool value
+        /// </param>
+        /// <returns bool></returns>
         public bool AdminLogin(string userName, string password, out LoginToken<Administrator> loginToken)
         {
             _administratorDAO = new DAOs.AdministratorDAO();
@@ -105,6 +129,15 @@ namespace FlightProject
             throw new WrongPasswordException();
         }
 
+        /// <summary>
+        /// Method for logging in an airline company.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="loginToken">
+        /// This param has the "OUT" prefix due to being also returned from this method with the bool value
+        /// </param>
+        /// <returns bool></returns>
         public bool AirlineLogin(string userName, string password, out LoginToken<AirlineCompany> loginToken)
         {
             _airlineDAO = new DAOs.AirlineDAO();
@@ -120,6 +153,15 @@ namespace FlightProject
             throw new WrongPasswordException();
         }
 
+        /// <summary>
+        /// Method for logging in a customer.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="loginToken">
+        /// This param has the "OUT" prefix due to being also returned from this method with the bool value
+        /// </param>
+        /// <returns bool></returns>
         public bool CustomerLogin(string userName, string password, out LoginToken<Customer> loginToken)
         {
             _customerDAO = new DAOs.CustomerDAO();
